@@ -1,0 +1,4 @@
+billiard==3.6.4.0
+celery==5.2.7
+Django==3.2.13
+django-extensions
