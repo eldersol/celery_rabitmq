@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from tareas.views import Registrar
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', Registrar.listar, name='home'),
+    path('nuevo', Registrar.inicio, name='nuevo'),
+    path('guardar', Registrar.guardar, name='guardar'),
+    path('listar', Registrar.listar, name='listar'),
 ]

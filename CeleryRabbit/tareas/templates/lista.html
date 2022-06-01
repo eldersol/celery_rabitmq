@@ -1,0 +1,22 @@
+{% extends 'encabezado.html' %}
+
+{% block content %}
+<a class="btn btn-success" href="{% url 'nuevo' %}">Nuevo</a>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Usuario</th>
+      <th scope="col">Correo</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for registro in form %}
+  <tr>
+    <th scope="row"> {{ registro.id }}</th>
+    <th scope="row"> {{ registro.usuario }}</th>
+    <th scope="row"> {{ registro.correo }}</th>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
