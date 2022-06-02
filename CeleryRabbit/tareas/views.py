@@ -15,10 +15,10 @@ class Registrar(HttpRequest):
         try:
             form = Formulario(request.POST)
             if form.is_valid():
-                form.save()
                 add.delay(2, 2)
                 #send_emails_users.delay(str(request.POST['correo']))
                 send_emails_users(str(request.POST['correo']))
+                form.save()
             return render(request, "registro.html", {"form": form, "mensaje": "ok"})
         except Exception as e:
             print(e)
