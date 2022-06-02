@@ -6,6 +6,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  rabbitmq:
+    image: rabbitmq:3.7-alpine
+
   django_app:
     build: .
     command: 'sh script.sh'
@@ -14,6 +17,7 @@ services:
       - .:/code
     depends_on:
       - db_postgres
+      - rabbitmq
 
   nginx:
     image: nginx:1.20-alpine
@@ -24,11 +28,6 @@ services:
       - static:/code/static
     depends_on:
       - django_app
-
-  rabbitmq:
-    image: rabbitmq:3.7-alpine
-    depends_on:
-      - nginx
 
 volumes:
   .:
