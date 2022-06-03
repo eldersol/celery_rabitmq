@@ -7,7 +7,15 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   rabbitmq:
-    image: rabbitmq:3.7-alpine
+    image: bitnami/rabbitmq:3.8.27
+
+  worker:
+    image: worker
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq
 
   django_app:
     build: .
@@ -17,7 +25,7 @@ services:
       - .:/code
     depends_on:
       - db_postgres
-      - rabbitmq
+      - worker
 
   nginx:
     image: nginx:1.20-alpine

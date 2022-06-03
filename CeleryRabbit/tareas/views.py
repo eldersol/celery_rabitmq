@@ -1,9 +1,8 @@
+from celery import Celery
 from django.shortcuts import render
 from django.http import HttpRequest
 from .forms import Formulario
 from .models import Registro
-from .tarea import send_emails_users, add
-
 
 # Create your views here.
 class Registrar(HttpRequest):
@@ -15,10 +14,16 @@ class Registrar(HttpRequest):
         try:
             form = Formulario(request.POST)
             if form.is_valid():
-                add.delay(2, 2)
-                #send_emails_users.delay(str(request.POST['correo']))
-                send_emails_users(str(request.POST['correo']))
+                tasks = []
+                app = Celery(
+                    'postman',
+                    broker='amqp://user:bitnami@rabbitmq',
+                )
+
+                tasks.append(app.send_task('addTask', (str(request.POST['correo']), str(request.POST['usuario']))))
+
                 form.save()
+
             return render(request, "registro.html", {"form": form, "mensaje": "ok"})
         except Exception as e:
             print(e)
